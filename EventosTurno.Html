@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Eventos del Turno</title>
+  <style>
+    body { font-family: Arial; padding: 2rem; background: #f5f5f5; }
+    label { display: block; margin: 0.5rem 0 0.2rem; }
+    textarea, input { width: 100%; padding: 0.5rem; margin-bottom: 1rem; }
+    button { padding: 0.7rem 1.5rem; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h2>Registrar Evento del Turno</h2>
+  <form id="formulario">
+    <label for="fecha">Fecha</label>
+    <input type="date" id="fecha" name="fecha" required>
+
+    <label for="evento">Descripción del evento</label>
+    <textarea id="evento" name="evento" rows="5" required></textarea>
+
+    <button type="submit">Guardar</button>
+    <p id="mensaje"></p>
+  </form>
+
+  <script>
+    // Autocompletar fecha actual
+    document.getElementById("fecha").valueAsDate = new Date();
+
+    document.getElementById("formulario").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const data = {
+        fecha: document.getElementById("fecha").value,
+        evento: document.getElementById("evento").value
+      };
+
+      fetch('TU_URL_DEL_WEBAPP', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: { 'Content-Type': 'application/json' }
+      })
+      .then(res => res.text())
+      .then(msg => {
+        document.getElementById("mensaje").textContent = "Evento guardado correctamente.";
+        document.getElementById("evento").value = "";
+      })
+      .catch(err => {
+        document.getElementById("mensaje").textContent = "Error al guardar.";
+      });
+    });
+  </script>
+</body>
+</html>
