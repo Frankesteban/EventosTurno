@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Eventos del Turno</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      padding: 2rem;
+      max-width: 600px;
+      margin: auto;
+    }
+
+    h2 {
+      color: #333;
+    }
+
+    label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 0.7rem;
+      margin-top: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
+    }
+
+    button {
+      margin-top: 1.5rem;
+      padding: 0.7rem 1.5rem;
+      background-color: #1976d2;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #135ba1;
+    }
+
+    #mensaje {
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h2>Registrar Evento del Turno</h2>
+  <form id="formulario">
+    <label for="fecha">Fecha:</label>
+    <input type="date" id="fecha" name="fecha" required>
+
+    <label for="evento">Descripción del evento:</label>
+    <textarea id="evento" name="evento" rows="5" required></textarea>
+
+    <button type="submit">Guardar</button>
+    <p id="mensaje"></p>
+  </form>
+
+  <script>
+    // Autocompletar fecha actual
+    document.getElementById("fecha").valueAsDate = new Date();
+
+    document.getElementById("formulario").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const data = {
+        fecha: document.getElementById("fecha").value,
+        evento: document.getElementById("evento").value
+      };
+
+      fetch('https://script.google.com/macros/s/AKfycbwNlo732UU5iv1M3OO6xtVmHkemxSN6xy2tVh-9d4swN4hqRJHS0cbenEYPJbRRAcCaNA/execP', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(res => res.text())
+      .then(response => {
+        document.getElementById("mensaje").textContent = "✅ Evento guardado correctamente.";
+        document.getElementById("evento").value = "";
+      })
+      .catch(error => {
+        document.getElementById("mensaje").textContent = "❌ Error al guardar el evento.";
+      });
+    });
+  </script>
+</body>
+</html>
